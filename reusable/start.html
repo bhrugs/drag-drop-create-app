@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <link href="css/jquery-ui.css" rel="stylesheet"></link>
+        <link href="css/jquery-ui.structure.css" rel="stylesheet"></link>
+        <link href="css/jquery-ui.theme.css" rel="stylesheet"></link>
+        <link href="bootstrap-3.3.4-dist/css/bootstrap.css" rel="stylesheet"></link>
+        <link href="bootstrap-3.3.4-dist/css/bootstrap-theme.css" rel="stylesheet"></link>
+        <link href="css/hover.css" rel="stylesheet"></link>
+        <link href="css/style.css" rel="stylesheet"></link>
+
+        <script src="js/jquery-2.1.3.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script src="js/custom.js"></script>
+        <script src="bootstrap-3.3.4-dist/js/bootstrap.js"></script>
+        <script src="js/section-behavior.js"></script>
+        
+    <script type="text/javascript">
+        
+         //variable to hold the id of the component which is being worked upon.
+         var componentInUse = "";
+        
+        $(document).ready(function(){
+            //step 1 : hiding the modals on page load
+            $("#context-tool").hide();
+            $("#section-component").hide();
+            
+            //making the modals draggable
+            $("#context-tool").draggable();
+            $("#section-component").draggable();    
+            
+            //step 2 : disabling the browser right click context menu
+            document.oncontextmenu = function(){
+                return false;
+            };
+            
+            //-NO NEED TO TRACK THIS- tracking the mouse's position
+            /*var xAxis, yAxis;
+            $(document).mousemove(function(e){
+                xAxis = e.pageX;
+                yAxis = e.pageY;
+            }).mouseover();*/
+            
+            //step 3 : handling context-tool's appearance
+            /*$(document).mousedown(function(e){
+            if(e.button === 2){
+                console.log("you right clicked");
+                $("#context-tool").show("swing");
+                return false;
+            }
+            });*/
+            
+            //step 3 & 6 : edit / configure the properties of an element 
+            $(document).bind("mousedown",function(e){
+                console.log("mousedown");
+                //if ctrl key is pressed
+                if(e.ctrlKey)
+                {
+                    console.log("ctrl is pressed");
+                    console.log("e.target.className :"+e.target.className);
+                    var classNameWhichClicked = e.target.className;
+                    //if right click with ctrl only when clicked on components
+                    if((!e.ctrlLeft) && (classNameWhichClicked.indexOf("a-section") > -1))
+                    {
+                        $("#section-component").show();
+                        console.info("ctrl+clicked, component id is: "+e.target.id);
+                        componentInUse = e.target.id;
+                    }
+                }
+                else{
+                    console.log("ctrl is not pressed");
+                    //in case of right click - anywhere
+                    if(e.button === 2)
+                    {
+                        console.info("you right clicked");
+                        $("#context-tool").show();
+                        return false;
+                    }
+                    //in case of click on fit-items
+                    /*classNameWhichClicked = e.target.className;
+                    if(e.button ===0 && (classNameWhichClicked.indexOf("fit-item") > -1)){
+                        //append class=glyphicon glyphicon-ok
+                        if($(e.target).css("background-color") == "rgb(0, 0, 0)"){
+                            console.log("already selected");
+                            //removing span
+                            $(e.target).find("span").remove();
+                            //background-color back to white
+                            $(e.target).css("background-color","white");
+                            //color back to black
+                            $(e.target).css("color","black");
+                        }
+                        else{
+                            $(e.target).append("<span style='float: right; margin-top:3px;' class='glyphicon glyphicon-ok'></span>");
+                            //change background color to black
+                            $(e.target).css("background-color","black");
+                            //change text color to white
+                            $(e.target).css("color","white");
+                            console.log("click on fit-item");
+                        }
+                    }*/
+                }
+            });           
+            
+            
+            //step 4 : handling context-tool's disappearance
+            $(document).keyup(function(e){
+            if(e.keyCode === 27)
+            {    
+                $("#context-tool").hide();
+                $("#section-component").hide();
+                console.log("you pressed ESC");
+                return true;
+            }
+            });
+            
+            //step 5 : on click of #add-section, add a draggable and resizable section
+            $("#add-section").click(function(e){
+                $("#context-tool").hide();
+                console.log("section is getting added");
+                
+                //step 5 - a
+                addSection();
+            });
+            
+            $()
+        });
+    </script>
+    </head>
+    
+    <body>
+        
+        <!-- the compoenent selection tool, context tool-->
+        <div id="context-tool">
+            <h1>select components</h1><hr/>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 hvr-grow" id="add-section">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                <h3>Section
+                                    <span class="glyphicon glyphicon-info-sign">
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4 work-in-progress-class hvr-buzz-out" id="add-grid">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                 <h3>Grid
+                                <span class="glyphicon glyphicon-info-sign">
+                                    </span></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4 work-in-progress-class hvr-buzz-out" id="add-form">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                 <h3>Form Elements<span class="glyphicon glyphicon-info-sign">
+                                    </span></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4 work-in-progress-class hvr-buzz-out" id="add-table">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                 <h3>Table<span class="glyphicon glyphicon-info-sign">
+                                    </span></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4 work-in-progress-class hvr-buzz-out" id="add-tabs">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                  <h3>Tabs<span class="glyphicon glyphicon-info-sign">
+                                    </span></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4 work-in-progress-class hvr-buzz-out" id="add-graph">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                  <h3>Graph<span class="glyphicon glyphicon-info-sign">
+                                    </span></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4 work-in-progress-class hvr-buzz-out" id="add-modal">
+                        <div class="thumbnail">
+                            <div class="caption">
+                                  <h3>Modal<span class="glyphicon glyphicon-info-sign">
+                                    </span></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!--<span>
+                <ul>
+                    <li>
+                        <a id="add-section">add section</a>
+                    </li>
+                </ul>
+            </span>-->
+        </div>
+        
+        <!-- configuration for a 'section' component-->
+        <div id="section-component">
+            <h1>-section-</h1><hr/>
+            <div class="container-fluid">
+                <div class="row fit-to">
+                        <span class="col-md-1 fit-label"><strong>fit to</strong></span>
+                        <span class="col-md-1 hvr-grow fit-item" id="section-fit-screen">screen</span>
+                        <span class="col-md-1 hvr-grow fit-item" id="section-fit-left">left</span>
+                        <span class="col-md-1 hvr-grow fit-item" id="section-fit-right">right</span>
+                        <span class="col-md-1 hvr-grow fit-item" id="section-fit-top">top</span>
+                        <span class="col-md-1 hvr-grow fit-item" id="section-fit-bottom">bottom</span>
+                </div>
+                
+                <div class="row fit-to">
+                        <span class="col-md-1 fit-label"><strong>position</strong></span>
+                        <span class="col-md-1 hvr-grow fit-item" id="section-position-fixed">fixed</span>
+                        <span class="col-md-1 hvr-grow fit-item" id="section-position-centered">center</span> 
+                </div>
+                <div class="row fit-to">
+                        <span class="col-md-1 fit-label"><strong>opacity</strong></span>
+                        <span class="col-md-1 hvr-grow" id="section-opacity-selector">
+                            <input type="range" min="0" max="1" step="0.1" value="1" id="section-opacity-selector-input">
+                        </span>
+                        <span class="col-md-1 hvr-grow" id="section-opacity-box">
+                            <input type="number" min="0" max="1" step="0.1" placeholder="0<x<1" value="1" id="section-opacity-box-input">
+                        </span>
+                </div>
+                <div class="row fit-to">
+                        <span class="col-md-1 fit-label"><strong>background</strong></span>
+                        <span class="col-md-1 hvr-grow" id="section-background-color">
+                            <input type="color" id="section-background-color-input">
+                        </span>
+                        <span class="col-md-1 hvr-grow" id="section-background-img">
+                            <input type="file" id="section-background-img-input">
+                        </span>
+                </div>
+                <div class="row fit-to">
+                        <span class="col-md-1 fit-label"><strong>fonts</strong></span>
+                        <span class="col-md-1 hvr-grow" id="section-font-size">
+                            <input type="number" min="0"  step="1" placeholder="px" value="1px" id="section-font-size-number">
+                        </span>
+                </div>
+                <div class="row fit-to">
+                        <span class="col-sm-1 fit-label"><strong>margin</strong></span>
+                        <span class="col-sm-1 hvr-grow" id="section-margin-left">
+                            <input type="number" step="1" placeholder="left" id="section-margin-left-number">
+                        </span>
+                        <span class="col-sm-1 hvr-grow" id="section-margin-right">
+                            <input type="number" step="1" placeholder="right" id="section-margin-right-number">
+                        </span>
+                        <span class="col-sm-1 hvr-grow" id="section-margin-top">
+                            <input type="number" step="1" placeholder="top" id="section-margin-top-number">
+                        </span>
+                        <span class="col-sm-1 hvr-grow" id="section-margin-bottom">
+                            <input type="number" step="1" placeholder="bottom" id="section-margin-bottom-number">
+                        </span>
+                        <span class="col-sm-1 hvr-grow" >
+                            <select class="form-control" id="section-margin-unit">
+                                <option value="px">px</option>
+                                <option value="pt">pt</option>
+                                <option value="cm">cm</option>
+                                <option value="%">%</option>
+                                <option value="auto">auto</option>
+                                <option value="inherit">inherit</option>
+                            </select>
+                        </span>
+                </div>
+                <div class="row fit-to">
+                        <span class="col-sm-1 fit-label"><strong>padding</strong></span>
+                        <span class="col-sm-1 hvr-grow" id="section-padding-left">
+                            <input type="number" step="1" placeholder="left" id="section-padding-left-number">
+                        </span>
+                        <span class="col-sm-1 hvr-grow" id="section-padding-right">
+                            <input type="number" step="1" placeholder="right" id="section-padding-right-number">
+                        </span>
+                        <span class="col-sm-1 hvr-grow" id="section-padding-top">
+                            <input type="number" step="1" placeholder="top" id="section-padding-top-number">
+                        </span>
+                        <span class="col-sm-1 hvr-grow" id="section-padding-bottom">
+                            <input type="number" step="1" placeholder="bottom" id="section-padding-bottom-number">
+                        </span>
+                        <span class="col-sm-1 hvr-grow" >
+                            <select class="form-control" id="section-padding-unit">
+                                <option value="px">px</option>
+                                <option value="pt">pt</option>
+                                <option value="cm">cm</option>
+                                <option value="%">%</option>
+                                <option value="auto">auto</option>
+                                <option value="inherit">inherit</option>
+                            </select>
+                        </span>
+                </div>
+                <div class="row fit-to">
+                        <span class="col-md-1 fit-label"><strong>height</strong></span>
+                        <span class="col-md-1 hvr-grow" id="section-height-amount">
+                            <input type="number" step="1" placeholder="height" id="section-height-amount-number">
+                        </span>    
+                        <span class="col-sm-1 hvr-grow" >
+                            <select class="form-control" id="section-height-unit">
+                                <option value="px">px</option>
+                                <option value="pt">pt</option>
+                                <option value="cm">cm</option>
+                                <option value="%">%</option>
+                                <option value="auto">auto</option>
+                                <option value="inherit">inherit</option>
+                            </select>
+                        </span>
+                        
+                </div>
+                <div class="row fit-to">
+                        <span class="col-md-1 fit-label"><strong>width</strong></span>   
+                        <span class="col-md-1 hvr-grow" id="section-width-amount">
+                            <input type="number" step="1" placeholder="width" id="section-width-amount-number">
+                        </span>
+                        <span class="col-sm-1 hvr-grow" >
+                            <select class="form-control" id="section-width-unit">
+                                <option value="px">px</option>
+                                <option value="pt">pt</option>
+                                <option value="cm">cm</option>
+                                <option value="%">%</option>
+                                <option value="auto">auto</option>
+                                <option value="inherit">inherit</option>
+                            </select>
+                        </span>
+                        
+                </div>
+                <div class="row fit-to">
+                        <span class="col-md-1 fit-label"><strong>mouse cursor</strong></span>
+                        <span class="col-md-1 hvr-grow" >
+                            <select class="form-control" id="section-cursor-options">
+                                <option value="alias">alias</option>
+                                <option value="all-scroll">all-scroll</option>
+                                <option value="auto">auto</option>
+                                <option value="cell">cell</option>
+                                <option value="context-menu">context-menu</option>
+                                <option value="col-resize">col-resize</option>
+                                <option value="copy">copy</option>
+                                <option value="crosshair">crosshair</option>
+                                <option value="default">default</option>
+                                <option value="e-resize">e-resize</option>
+                                <option value="ew-resize">ew-resize</option>
+                                <option value="grab">grab</option>
+                                <option value="grabbing">grabbing</option>
+                                <option value="help">help</option>
+                                <option value="move">move</option>
+                                <option value="n-resize">n-resize</option>
+                                <option value="ne-resize">ne-resize</option>
+                                <option value="nesw-resize">nesw-resize</option>
+                                <option value="ns-resize">ns-resize</option>
+                                <option value="nw-resize">nw-resize</option>
+                                <option value="nwse-resize">nwse-resize</option>
+                                <option value="no-drop">no-drop</option>
+                                <option value="none">none</option>
+                                <option value="not-allowed">not-allowed</option>
+                                <option value="pointer">pointer</option>
+                                <option value="progress">progress</option>
+                                <option value="row-resize">row-resize</option>
+                                <option value="s-resize">s-resize</option>
+                                <option value="se-resize">se-resize</option>
+                                <option value="sw-resize">sw-resize</option>
+                                <option value="text">text</option>
+                                <option value="url">url</option>
+                                <option value="vertical-text">vertical-text</option>
+                                <option value="w-resize">w-resize</option>
+                                <option value="wait">wait</option>
+                                <option value="zoom-in">zoom-in</option>
+                                <option value="zoom-out">zoom-out</option>
+                                <option value="initial">initial</option>
+                            </select>
+                        </span>
+                </div>
+                <div class="row fit-to">
+                        <span class="col-md-1 fit-label"><strong>border</strong></span>
+                        <span class="col-md-1 hvr-grow">
+                            <select class="form-control" id="section-border-style">
+                                <option value="px">dotted</option>
+                                <option value="pt">dashed</option>
+                                <option value="cm">solid</option>
+                                <option value="%">double</option>
+                                <option value="auto">groove</option>
+                                <option value="inherit">inset</option>
+                                <option value="inherit">outset</option>
+                            </select>
+                        </span>
+                        <span class="col-md-1 hvr-grow" id="section-border-width">
+                            <input type="number" step="1" placeholder="width" id="section-border-width-number">
+                        </span>
+                        <span class="col-md-1 hvr-grow" >
+                            <select class="form-control" id="section-border-width-unit">
+                                <option value="px">px</option>
+                                <option value="pt">pt</option>
+                                <option value="cm">cm</option>
+                                <option value="%">%</option>
+                                <option value="auto">auto</option>
+                                <option value="inherit">inherit</option>
+                            </select>
+                        </span>
+                        <span class="col-md-1 hvr-grow" id="section-border-blank">
+                            &nbsp;
+                        </span>
+                        <span class="col-md-1 hvr-grow" id="section-border-radius">
+                            <input type="number" step="1" placeholder="radius" id="section-border-radius-number">
+                        </span>
+                        <span class="col-md-1 hvr-grow">
+                            <select class="form-control" id="section-border-radius-unit">
+                                <option value="px">px</option>
+                                <option value="pt">pt</option>
+                                <option value="cm">cm</option>
+                                <option value="%">%</option>
+                                <option value="auto">auto</option>
+                                <option value="inherit">inherit</option>
+                            </select>
+                        </span>
+                </div>
+                <div class="row fit-to">
+                        <span class="col-md-1 fit-label"><strong>z-index</strong></span>   
+                        <span class="col-md-1 hvr-grow" id="section-z-index">
+                            <input type="number" step="1" placeholder="number" id="section-z-index-number">
+                        </span>
+                </div>
+                <div class="row fit-to">
+                        <span class="col-md-1 fit-label"><strong>content</strong></span>
+                        <span class="col-md-1 hvr-grow fit-item" id="section-content-editable">editable</span>
+                </div>
+                <div class="row fit-to">
+                        <span class="col-md-1 fit-label"><strong>component</strong></span>
+                        <span class="col-md-1 hvr-grow fit-item" id="section-component-remove">remove</span>
+                </div>
+            </div>   
+        </div>
+        
+        
+        
+        
+    </body>
+</html>

@@ -1,0 +1,107 @@
+#context-tool, #section-component{
+    width: 82%;
+    height: 65%;
+    position:fixed;
+    z-index: 1000;
+    background-color: ghostwhite;
+    margin-top: 5%;
+    margin-left: 8%;
+    font-family: arial;
+    font-size: 10px;
+    box-shadow: 0px 0px 10px black;
+    cursor: all-scroll;
+    overflow-y: auto;
+    
+}
+
+#context-tool h1, #section-component h1{
+    text-align: center;
+}
+
+#context-tool ul, #section-component ul{
+    font-size: 18px;
+    font-family: arial;
+    list-style-type: none;
+}
+
+.a-section{
+    border: 1px dotted black;
+    height: 150px;
+    width: 150px;
+    
+}
+
+#add-section, #add-grid, #add-form, #add-table, #add-tabs, #add-graph, #add-modal{
+    cursor: pointer;
+}
+
+.glyphicon-info-sign{
+    float: right;
+}
+
+.work-in-progress-class{
+    opacity: 0.3;
+}
+
+.row{
+    margin-left:0;
+    margin-right: 0;
+}
+
+.flex-container{
+    list-style: none;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    justify-content: space-around; 
+}
+
+.fit-to{
+    border: 1px dotted green;
+    
+    margin-bottom: 10px;
+}
+
+.fit-to span{
+    margin: 10px;
+    font-size: 15px;
+}
+
+.fit-label{
+    float: left;
+}
+
+.fit-item {
+    background: white;
+    width:auto;
+    height: 25px;
+    color: black;
+    text-align: center;
+    border: 1px solid black;
+    cursor: pointer;
+    
+}
+
+.fit-item .glyphicon-ok{
+    
+}
+
+#section-opacity-selector, #section-background-color, #section-background-color, #section-background-img, #section-margin-unit, #section-padding-unit, #section-width-unit, #section-height-unit, #section-cursor-options, #section-border-style, #section-border-width-unit, #section-border-radius-unit{
+    width:auto;
+    height: auto;
+}
+
+#section-padding-left, #section-padding-right, #section-padding-top, #section-padding-bottom, #section-margin-left, #section-margin-right, #section-margin-top, #section-margin-bottom, #section-font-size, #section-margin-unit, #section-padding-unit, #section-width-amount, #section-height-amount, #section-width-unit, #section-height-unit, #section-cursor-options, #section-border-width, #section-border-radius, #section-border-style, #section-border-width-unit, #section-border-radius-unit, #section-border-blank{
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+    margin-left: 2px !important;
+    margin-right: 2px !important;
+    
+}
+
+input[type="number"]{
+    width:100%;
+}
